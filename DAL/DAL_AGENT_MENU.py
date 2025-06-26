@@ -1,5 +1,5 @@
 import AGENT.class_agent
-import  DAL_agenst_db as dal
+import DAL.DAL_agenst_db as dal
 import AGENT.static_agent_func
 class agent_dal:
     @staticmethod
@@ -14,7 +14,9 @@ class agent_dal:
         values = (new_agent.codeName, new_agent.realName, new_agent.location, new_agent.status.value, new_agent.missionsCompleted)
         dal.MainDAL.execute(sql, values)
         print("add  agent sucssefualy")
+    @staticmethod
+    def remone_agent_by_id(id):
+        sql = f"DELETE FROM agents WHERE id ={id} "
+        dal.MainDAL.execute(sql)
+        print("remove sucssefully")
 
-
-agent_dal.add_agent()
-print(agent_dal.get_all_agent())

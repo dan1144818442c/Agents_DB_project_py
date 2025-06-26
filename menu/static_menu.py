@@ -19,6 +19,15 @@ def show_agents(agents_list):
 
 
 
+def show_and_get_colom_name():
+
+    print("id", "codeName", "realName", "location", "status", "missionsCompleted")
+    choice = input()
+    while choice not in [ "id", "codeName", "realName", "location", "status", "missionsCompleted"]:
+        print("must enter one from this")
+        print("id ,code_name , realName , location , status , missionsCompelted")
+        choice = input()
+    return  choice
 
 def menu():
     while True:
@@ -30,7 +39,11 @@ def menu():
         elif choice == "2":
             DAL.DAL_AGENT_MENU.agent_dal.add_agent()
         elif choice == "4":
-            id = int(input("enter id "))
-            DAL.DAL_AGENT_MENU.agent_dal.remone_agent_by_id(id)
 
+            choice , details = get_from_user_by_colom()
+            DAL.DAL_AGENT_MENU.agent_dal.remove_agent(choice,details)
 
+def get_from_user_by_colom():
+    choice = show_and_get_colom_name()
+    details = input(f"enter  which {choice} ")
+    return (choice,details)

@@ -14,9 +14,13 @@ class agent_dal:
         values = (new_agent.codeName, new_agent.realName, new_agent.location, new_agent.status.value, new_agent.missionsCompleted)
         dal.MainDAL.execute(sql, values)
         print("add  agent sucssefualy")
+
     @staticmethod
-    def remone_agent_by_id(id):
-        sql = f"DELETE FROM agents WHERE id ={id} "
-        dal.MainDAL.execute(sql)
-        print("remove sucssefully")
+    def remove_agent(by, details):
+        sql = f"DELETE FROM agents WHERE {by} = %s"
+        dal.MainDAL.execute(sql, (details,))
+        print("Remove successfully")
+
+
+    # def update_s
 

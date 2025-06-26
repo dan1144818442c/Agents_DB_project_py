@@ -11,7 +11,6 @@ class MainDAL:
                 "database": "eagleeyedb"
             }
         else:
-            # אתה יכול לפתח פה אם תשתמש במחרוזת חיבור
             raise NotImplementedError("Custom connection strings not supported yet.")
 
         conn = mysql.connector.connect(**connection_data)
@@ -22,14 +21,26 @@ class MainDAL:
         conn.close()
 
     @staticmethod
-    def execute(sql, connection_string=None):
+    def execute(sql, params=None, connection_string=None):
         conn = MainDAL.connect(connection_string)
-        cursor = conn.cursor(dictionary=True)  # מחזיר dict לפי שמות עמודות
-        cursor.execute(sql)
+        cursor = conn.cursor(dictionary=True)
+        try:
+            if params:
+                cursor.execute(sql, params)
+            else:
+                cursor.execute(sql)
 
-        rows = cursor.fetchall()
-        cursor.close()
-        conn.close()
+            if sql.strip().upper().startswith("SELECT"):
+                rows = cursor.fetchall()
+            else:
+                conn.commit()
+                rows = None
+        except Exception as e:
+            print(f"Database error: {e}")
+            rows = None
+        finally:
+            cursor.close()
+            conn.close()
         return rows
 
     @staticmethod
